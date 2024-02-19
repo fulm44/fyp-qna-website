@@ -1,0 +1,55 @@
+/* src/styles/HomePage.css */
+.homePage {
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.logo {
+  height: 60px; /* Adjust based on your logo's size */
+}
+
+.title {
+  color: #004aad; /* Adjust color as needed */
+}
+
+.buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-button {
+  background-color: #004aad;
+  color: white;
+}
+
+.login-button {
+  background-color: white;
+  color: #004aad;
+  border: 1px solid #004aad;
+}
+
+.aboutSection, .hero, .features {
+  margin: 20px 0;
+}
+
+.site-footer {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+}
+
+.site-footer nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+}
