@@ -1,55 +1,84 @@
 /* src/styles/HomePage.css */
+
 .homePage {
-  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 .logo {
-  height: 60px; /* Adjust based on your logo's size */
+  height: 60px;
 }
 
 .title {
-  color: #004aad; /* Adjust color as needed */
+  flex-grow: 1;
+  text-align: center;
+  color: #0056b3;
+  margin: 0 20px;
 }
 
-.buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.register-button, .login-button {
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .register-button {
-  background-color: #004aad;
+  background-color: #007bff;
   color: white;
 }
 
 .login-button {
-  background-color: white;
-  color: #004aad;
-  border: 1px solid #004aad;
+  background-color: transparent;
+  color: #007bff;
+  border: 2px solid #007bff;
 }
 
 .aboutSection, .hero, .features {
-  margin: 20px 0;
+  margin-bottom: 20px;
+}
+
+.hero h2, .features h2 {
+  color: #0056b3;
+}
+
+ol {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 10px;
 }
 
 .site-footer {
-  margin-top: 20px;
+  background-color: #f8f9fa;
   padding: 20px;
-  background-color: #333;
-  color: white;
+  text-align: center;
 }
 
 .site-footer nav a {
-  color: white;
+  margin: 0 10px;
+  color: #007bff;
   text-decoration: none;
-  margin: 0 15px;
+}
+
+.site-footer nav a:hover {
+  text-decoration: underline;
 }

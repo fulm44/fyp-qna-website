@@ -1,6 +1,6 @@
 // src/components/HomePage.js
 import React from "react";
-import "./styles/HomePage.css";
+import "../styles/HomePage.css";
 import logo from "../images/Lecture Loop logo - transparent.png"; // path to logo
 
 const HomePage = () => {
