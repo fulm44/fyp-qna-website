@@ -3,22 +3,12 @@ import React from "react";
 import "../styles/HomePage.css";
 import logo from "../images/Lecture Loop logo - transparent.png";
 import { Link } from "react-router-dom";
+import Header from "./Header";
 
 const HomePage = () => {
   return (
     <div className="homePage">
-      <header className="header">
-        <img src={logo} alt="Lecture Loop Logo" className="logo" />
-        <h1 className="title">Lecture Loop</h1>
-        <div className="buttons">
-          <Link to="/register" className="register-button">
-            Register
-          </Link>
-          <Link to="/login" className="login-button">
-            Login
-          </Link>
-        </div>
-      </header>
+      <Header />
       <section className="aboutSection">
         <p>
           This is where you can explore and participate in QnA for your courses.

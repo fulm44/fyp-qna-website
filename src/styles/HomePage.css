@@ -4,55 +4,12 @@
   font-family: 'Arial', sans-serif;
   color: #333;
   line-height: 1.6;
-  padding: 20px;
-  max-width: 800px;
   margin: auto;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 40px;
-}
-
-.logo {
-  height: 60px;
-}
-
-.title {
-  flex-grow: 1;
-  text-align: center;
-  color: #0056b3;
-  margin: 0 20px;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.register-button, .login-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.register-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.login-button {
-  background-color: transparent;
-  color: #007bff;
-  border: 2px solid #007bff;
 }
 
 .aboutSection, .hero, .features {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .hero h2, .features h2 {
@@ -60,7 +17,8 @@
 }
 
 ol {
-  padding-left: 20px;
+  list-style-position: inside;
+  padding-left: 0;
 }
 
 li {

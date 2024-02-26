@@ -1,0 +1,34 @@
+/* Header.css */
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.logo {
+  height: 50px;
+  margin-right: auto; /* Adjusted margin */
+}
+
+.title {
+  font-size: 1.5em;
+  color: #343a40;
+}
+
+.buttons {
+   margin-left:auto; /* Adjusted margin */
+   display:flex; 
+}
+
+.register-button,
+.login-button {
+   margin-left:10px; /* Adjusted margin */
+   padding:10px 20px; 
+   color:#fff; 
+   background-color:#007bff; 
+   border:none; 
+   border-radius :5px ;
+   text-decoration: none;
+}
