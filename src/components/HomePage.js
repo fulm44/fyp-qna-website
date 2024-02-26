@@ -2,6 +2,7 @@
 import React from "react";
 import "../styles/HomePage.css";
 import logo from "../images/Lecture Loop logo - transparent.png";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -10,7 +11,9 @@ const HomePage = () => {
         <img src={logo} alt="Lecture Loop Logo" className="logo" />
         <h1 className="title">Lecture Loop</h1>
         <div className="buttons">
-          <button className="register-button">Register</button>
+          <Link to="/register" className="register-button">
+            Register
+          </Link>
           <button className="login-button">Login</button>
         </div>
       </header>
