@@ -14,7 +14,9 @@ const HomePage = () => {
           <Link to="/register" className="register-button">
             Register
           </Link>
-          <button className="login-button">Login</button>
+          <Link to="/login" className="login-button">
+            Login
+          </Link>
         </div>
       </header>
       <section className="aboutSection">
