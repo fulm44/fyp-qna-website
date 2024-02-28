@@ -5,7 +5,9 @@ import logo from "../images/Lecture Loop logo - transparent.png";
 const Header = () => {
   return (
     <header className="header">
-      <img src={logo} alt="Lecture Loop Logo" className="logo" />
+      <Link to="/">
+        <img src={logo} alt="Lecture Loop Logo" className="logo" />
+      </Link>
       <h1 className="title">Lecture Loop</h1>
       <div className="buttons">
         <Link to="/register" className="register-button">

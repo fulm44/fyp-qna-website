@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "./Header";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -21,27 +22,30 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <div>
-        <label>Username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <button type="submit">Login</button>
-    </form>
+    <>
+      <Header />
+      <form onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <div>
+          <label>Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <button type="submit">Login</button>
+      </form>
+    </>
   );
 }
 

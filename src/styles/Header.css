@@ -1,34 +1,45 @@
-/* Header.css */
+/* Assuming you have a CSS file (e.g., Header.css) */
 .header {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  padding: 20px;
-  background-color: #f8f9fa;
+  justify-content: center; /* Center horizontally */
+  padding: 1rem;
+  background-color: #f8f8f8;
+  /* Add any other styling you need for the header */
 }
 
 .logo {
-  height: 50px;
-  margin-right: auto; /* Adjusted margin */
+  width: 50px; /* Adjust the logo size as needed */
+  height: auto;
 }
 
 .title {
-  font-size: 1.5em;
-  color: #343a40;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 1rem;
+  margin-right: 1rem; /* Add spacing between title and buttons */
 }
 
 .buttons {
-   margin-left:auto; /* Adjusted margin */
-   display:flex; 
+  display: flex;
+  gap: 1rem;
 }
 
 .register-button,
 .login-button {
-   margin-left:10px; /* Adjusted margin */
-   padding:10px 20px; 
-   color:#fff; 
-   background-color:#007bff; 
-   border:none; 
-   border-radius :5px ;
-   text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.register-button {
+  background-color: #007bff; /* Blue color for register button */
+}
+
+.login-button {
+  background-color: #28a745; /* Green color for login button */
 }

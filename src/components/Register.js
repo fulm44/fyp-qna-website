@@ -15,8 +15,8 @@ function Register() {
       setErrorMessage("The username cannot be blank.");
       return false;
     }
-    if (!email.includes("@")) {
-      setErrorMessage("Email provided is not valid.");
+    if (!email.includes("@aston.ac.uk")) {
+      setErrorMessage("Email provided is not valid. Must end with @aston.ac.uk.");
       return false;
     }
     if (!password) {
