@@ -10,6 +10,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [course, setCourse] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const validateForm = () => {
     if (!username) {
@@ -17,7 +18,9 @@ function Register() {
       return false;
     }
     if (!email.includes("@aston.ac.uk")) {
-      setErrorMessage("Email provided is not valid. Must end with @aston.ac.uk.");
+      setErrorMessage(
+        "Email provided is not valid. Must end with @aston.ac.uk."
+      );
       return false;
     }
     if (!password) {
@@ -42,8 +45,39 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setSuccessMessage(""); // Reset success message
     if (validateForm()) {
-      console.log(username, password, email);
+      try {
+        // Assuming you have a function to make POST requests to your backend
+        const response = await fetch("http://localhost:3006/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password, // Ensure your backend handles password encryption
+            email,
+            course,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Display success message
+          setSuccessMessage("Account registered successfully.");
+          // Optionally, clear the form or redirect the user
+        } else {
+          // Handle errors from the server
+          setErrorMessage(
+            data.message || "An error occurred during registration."
+          );
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+        setErrorMessage("An error occurred during registration.");
+      }
     }
   };
 
@@ -102,10 +136,12 @@ function Register() {
               <option value="engineering">Engineering</option>
               <option value="economics">Economics</option>
               <option value="law">Law</option>
-              {/* Add other options here */}
             </select>
           </div>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {successMessage && (
+            <div className="success-message">{successMessage}</div>
+          )}{" "}
           <button type="submit">Register</button>
         </form>
       </div>
