@@ -141,7 +141,7 @@ function Register() {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {successMessage && (
             <div className="success-message">{successMessage}</div>
-          )}{" "}
+          )}
           <button type="submit">Register</button>
         </form>
       </div>

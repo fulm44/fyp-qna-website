@@ -60,13 +60,11 @@ app.post("/register", async (req, res) => {
     res.json({ success: true, message: "User registered successfully." });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Database error.",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Database error.",
+      error: error.message,
+    });
   }
 });
 
@@ -78,4 +76,32 @@ app.get("/", (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const [users] = await pool
+      .promise()
+      .query("SELECT * FROM users WHERE username = ?", [username]);
+
+    if (users.length === 0) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Username not found." });
+    }
+    const user = users[0];
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    if (!passwordMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials." });
+    }
+    //success login -> generate a JWT token
+    res.json({ message: "Login successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error", error: error.message });
+  }
 });
