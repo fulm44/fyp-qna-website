@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/Lecture Loop logo - transparent.png";
+import UserContext from "../context/UserContext"; // Adjust the import path as necessary
 
 const Header = () => {
+  const { user, logout } = useContext(UserContext); // Destructure logout if provided by your context
+
   return (
     <header className="header">
       <Link to="/">
@@ -10,12 +13,22 @@ const Header = () => {
       </Link>
       <h1 className="title">Lecture Loop</h1>
       <div className="buttons">
-        <Link to="/register" className="register-button">
-          Register
-        </Link>
-        <Link to="/login" className="login-button">
-          Login
-        </Link>
+        {user ? (
+          <>
+            <span>Welcome, {user.username}</span>
+            <button onClick={logout}>Logout</button>{" "}
+            {/* Use logout from context */}
+          </>
+        ) : (
+          <>
+            <Link to="/register" className="register-button">
+              Register
+            </Link>
+            <Link to="/login" className="login-button">
+              Login
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

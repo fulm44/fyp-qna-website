@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react"; // Import useContext
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+// Import your UserContext
+import UserContext from "../context/UserContext";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Add this line to handle success message
+  const navigate = useNavigate();
+
+  // Use UserContext to set user data
+  const { setUser } = useContext(UserContext); // Assuming your context provides a setUser function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +27,6 @@ function Login() {
 
     try {
       const response = await fetch("http://localhost:3006/login", {
-        // Ensure the URL matches your backend endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,8 +36,9 @@ function Login() {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage("Login successful"); // Display success message or handle user redirection
         console.log("Login success:", data);
+        setUser(data); // Update user state with data received from the server
+        navigate("/qna"); // Redirect to QnA page after successful login
       } else {
         throw new Error(data.message || "An error occurred during login.");
       }
@@ -64,10 +70,6 @@ function Login() {
           />
         </div>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-        {successMessage && (
-          <div className="success-message">{successMessage}</div>
-        )}{" "}
-        {/* Display success message */}
         <button type="submit">Login</button>
       </form>
     </>
