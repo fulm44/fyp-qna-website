@@ -10,19 +10,26 @@ const Header = () => {
     logout();
     navigate("/");
   };
+  const handleLogoClick = () => {
+    if (user) {
+      navigate("/qna");
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <header className="header">
-      <Link to="/">
+      <div onClick={handleLogoClick} style={{ cursor: "pointer" }}>
         <img src={logo} alt="Lecture Loop Logo" className="logo" />
-      </Link>
+      </div>
+
       <h1 className="title">Lecture Loop</h1>
       <div className="buttons">
         {user ? (
           <>
             <span>Welcome, {user.username}</span>
             <button onClick={handleLogout}>Logout</button>{" "}
-            {/* Use logout from context */}
           </>
         ) : (
           <>
