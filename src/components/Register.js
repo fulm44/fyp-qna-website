@@ -9,7 +9,7 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [course, setCourse] = useState("");
+  const [courseName, setCourseName] = useState("");
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const validateForm = () => {
@@ -35,7 +35,7 @@ function Register() {
       setErrorMessage("Passwords do not match.");
       return false;
     }
-    if (!course) {
+    if (!courseName) {
       setErrorMessage("Course can't be empty.");
       return false;
     }
@@ -58,7 +58,7 @@ function Register() {
             username,
             password, // Ensure your backend handles password encryption
             email,
-            course,
+            courseName, // Change from course to courseName
           }),
         });
 
@@ -122,20 +122,20 @@ function Register() {
           <div>
             <label>Course</label>
             <select
-              value={course}
-              onChange={(e) => setCourse(e.target.value)}
+              value={courseName}
+              onChange={(e) => setCourseName(e.target.value)}
               defaultValue=""
             >
               <option value="" disabled>
                 Select your course
               </option>
-              <option value="computer_science">Computer Science</option>
-              <option value="business">Business</option>
-              <option value="maths">Maths</option>
-              <option value="english">English</option>
-              <option value="engineering">Engineering</option>
-              <option value="economics">Economics</option>
-              <option value="law">Law</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Business">Business</option>
+              <option value="Maths">Maths</option>
+              <option value="English">English</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Economics">Economics</option>
+              <option value="Law">Law</option>
             </select>
           </div>
           {errorMessage && <div className="error-message">{errorMessage}</div>}

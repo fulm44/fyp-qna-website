@@ -1,0 +1,40 @@
+.qna-page {
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  padding: 20px;
+}
+
+.ask-button {
+  margin: 20px auto; /* Updated */
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block; /* Added */
+  max-width: 200px; /* Adjust as needed */
+}
+
+.questions-table {
+  margin-top: 20px;
+  width: 80%; /* Adjust the width as needed */
+  margin-left: auto; /* Center the table */
+  margin-right: auto; /* Center the table */
+}
+
+.questions-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.questions-table th,
+.questions-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.questions-table th {
+  background-color: #f2f2f2;
+}
