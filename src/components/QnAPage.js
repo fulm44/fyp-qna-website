@@ -59,7 +59,8 @@ function QnAPage() {
                 <td>{question.title}</td>
                 <td>{question.body}</td>
                 <td>{question.username}</td>{" "}
-                <td>{new Date(question.created_at).toLocaleString()}</td>
+                <td>{new Date(question.createdAt).toLocaleString()}</td>{" "}
+                {/* Use createdAt */}{" "}
               </tr>
             ))}
           </tbody>
