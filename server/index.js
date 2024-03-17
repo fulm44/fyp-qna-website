@@ -33,9 +33,7 @@ app.post("/register", async (req, res) => {
   try {
     const [courseResult] = await pool
       .promise()
-      .query("SELECT course_id FROM courses WHERE course_name = ?", [
-        courseName,
-      ]);
+      .query("SELECT courseId FROM courses WHERE courseName = ?", [courseName]);
     if (courseResult.length === 0) {
       return res
         .status(404)
@@ -60,7 +58,7 @@ app.post("/register", async (req, res) => {
     await pool
       .promise()
       .query(
-        "INSERT INTO users (username, email, password_hash, course_id, created_at) VALUES (?, ?, ?, ?, NOW())",
+        "INSERT INTO users (username, email, passwordHash, courseId, createdAt) VALUES (?, ?, ?, ?, NOW())",
         [username, email, hashedPassword, courseId]
       );
     res.json({ success: true, message: "User registered successfully." });
@@ -84,13 +82,11 @@ app.post("/login", async (req, res) => {
   }
 
   try {
-    // Query database for user
     const [users] = await pool
       .promise()
       .query("SELECT * FROM users WHERE username = ?", [username]);
 
     if (users.length === 0) {
-      // No user found with the provided username
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials." });
@@ -98,26 +94,36 @@ app.post("/login", async (req, res) => {
 
     const user = users[0];
 
-    // Check if the provided password matches the hashed password in the database
-    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    // Corrected to use the updated column name
+    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
 
     if (passwordMatch) {
-      // Password matches, login successful
-      // Optionally, you can generate a token here if you're using JWT for authentication
-
       res.json({
         success: true,
         message: "Login successful",
-        // Send back username or other user info you might need in your application
         username: user.username,
       });
     } else {
-      // Password does not match
       res.status(401).json({ success: false, message: "Invalid credentials." });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error." });
+  }
+});
+
+app.get("/questions", async (req, res) => {
+  try {
+    const [questions] = await pool.promise().query(`
+      SELECT q.questionId, q.title, q.body, q.createdAt, u.username 
+      FROM questions q
+      JOIN users u ON q.userId = u.userId
+      ORDER BY q.createdAt DESC
+    `);
+    res.json(questions);
+  } catch (error) {
+    console.error("Failed to fetch questions:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

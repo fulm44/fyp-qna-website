@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import { useUser } from "../context/UserContext";
-import "../styles/QnAPage.css"; // Ensure you have a CSS file for styles
+import "../styles/QnAPage.css"; // Make sure this path is correct
 
 function QnAPage() {
   const [questionsList, setQuestionsList] = useState([]);
@@ -10,7 +10,11 @@ function QnAPage() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("http://localhost:3006/questions");
+        const response = await fetch("http://localhost:3006/questions", {
+          headers: {
+            // If you have authentication, pass your token in headers
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -24,9 +28,10 @@ function QnAPage() {
     fetchQuestions();
   }, []);
 
+  // This function might be for opening a modal or redirecting to a question asking page
   const handleAskQuestion = () => {
-    // Logic to handle asking a question
     console.log("Ask question clicked");
+    // Implement navigation to question asking form/page or modal opening
   };
 
   return (
@@ -44,6 +49,7 @@ function QnAPage() {
             <tr>
               <th>Title</th>
               <th>Question</th>
+              <th>Asked By</th>
               <th>Asked On</th>
             </tr>
           </thead>
@@ -52,6 +58,7 @@ function QnAPage() {
               <tr key={question.question_id}>
                 <td>{question.title}</td>
                 <td>{question.body}</td>
+                <td>{question.username}</td>{" "}
                 <td>{new Date(question.created_at).toLocaleString()}</td>
               </tr>
             ))}
