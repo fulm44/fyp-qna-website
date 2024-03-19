@@ -33,6 +33,7 @@ const QuestionForm = () => {
           userId: user.userId, // Make sure this matches how userId is stored
           title,
           body,
+          courseId: user.courseId,
         }),
       });
 

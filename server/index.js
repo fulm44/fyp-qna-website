@@ -104,6 +104,7 @@ app.post("/login", async (req, res) => {
         user: {
           username: user.username,
           userId: user.userId,
+          courseId: user.courseId,
         },
       });
     } else {
