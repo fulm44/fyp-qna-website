@@ -7,17 +7,17 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (userData) => {
-    // Simulate a login
+    console.log("Logging in user:", userData);
     setUser(userData);
   };
 
   const logout = () => {
-    // Simulate a logout
+    console.log("Logging out");
     setUser(null);
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </UserContext.Provider>
   );

@@ -101,7 +101,10 @@ app.post("/login", async (req, res) => {
       res.json({
         success: true,
         message: "Login successful",
-        username: user.username,
+        user: {
+          username: user.username,
+          userId: user.userId,
+        },
       });
     } else {
       res.status(401).json({ success: false, message: "Invalid credentials." });
@@ -124,6 +127,36 @@ app.get("/questions", async (req, res) => {
   } catch (error) {
     console.error("Failed to fetch questions:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/submit-question", async (req, res) => {
+  const { userId, title, body, courseId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "UserId is required" });
+  } else if (!title) {
+    return res.status(400).json({ message: "Title is required" });
+  } else if (!body) {
+    return res.status(400).json({ message: "Body is required" });
+  } else if (!courseId) {
+    return res.status(400).json({ message: "CourseId is required" });
+  }
+
+  try {
+    await pool
+      .promise()
+      .query(
+        "INSERT INTO questions (userId, title, body, createdAt, courseId) VALUES (?, ?, ?, NOW(), ?)",
+        [userId, title, body, courseId]
+      );
+
+    res.json({ message: "Question submitted successfully" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error submitting question", error: error.message });
   }
 });
 

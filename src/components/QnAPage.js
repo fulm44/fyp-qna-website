@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import { useUser } from "../context/UserContext";
 import "../styles/QnAPage.css"; // Make sure this path is correct
+import { useNavigate } from "react-router-dom";
 
 function QnAPage() {
   const [questionsList, setQuestionsList] = useState([]);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -31,7 +33,7 @@ function QnAPage() {
   // This function might be for opening a modal or redirecting to a question asking page
   const handleAskQuestion = () => {
     console.log("Ask question clicked");
-    // Implement navigation to question asking form/page or modal opening
+    navigate("/ask-question");
   };
 
   return (
@@ -60,7 +62,6 @@ function QnAPage() {
                 <td>{question.body}</td>
                 <td>{question.username}</td>{" "}
                 <td>{new Date(question.createdAt).toLocaleString()}</td>{" "}
-                {/* Use createdAt */}{" "}
               </tr>
             ))}
           </tbody>

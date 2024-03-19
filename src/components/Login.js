@@ -35,10 +35,11 @@ function Login() {
       });
 
       const data = await response.json();
+      console.log("Login response:", data);
       if (response.ok) {
         console.log("Login success:", data);
-        setUser(data); // Update user state with data received from the server
-        navigate("/qna"); // Redirect to QnA page after successful login
+        setUser(data.user); // This assumes `data.user` contains { username, userId }
+        navigate("/qna");
       } else {
         throw new Error(data.message || "An error occurred during login.");
       }
