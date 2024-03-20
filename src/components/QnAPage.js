@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import { useUser } from "../context/UserContext";
-import "../styles/QnAPage.css"; // Make sure this path is correct
+import "../styles/QnAPage.css";
 import { useNavigate } from "react-router-dom";
 
 function QnAPage() {
@@ -30,7 +30,6 @@ function QnAPage() {
     fetchQuestions();
   }, []);
 
-  // This function might be for opening a modal or redirecting to a question asking page
   const handleAskQuestion = () => {
     console.log("Ask question clicked");
     navigate("/ask-question");
@@ -57,11 +56,17 @@ function QnAPage() {
           </thead>
           <tbody>
             {questionsList.map((question) => (
-              <tr key={question.question_id}>
-                <td>{question.title}</td>
+              <tr key={question.questionId}>
+                <td
+                  className="clickable-title"
+                  onClick={() => navigate(`/questions/${question.questionId}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {question.title}
+                </td>
                 <td>{question.body}</td>
-                <td>{question.username}</td>{" "}
-                <td>{new Date(question.createdAt).toLocaleString()}</td>{" "}
+                <td>{question.username}</td>
+                <td>{new Date(question.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

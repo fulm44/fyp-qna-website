@@ -38,3 +38,9 @@
 .questions-table th {
   background-color: #f2f2f2;
 }
+
+.questions-table td.clickable-title {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

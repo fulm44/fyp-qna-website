@@ -161,6 +161,60 @@ app.post("/submit-question", async (req, res) => {
   }
 });
 
+app.get("/questions/:questionId", async (req, res) => {
+  const { questionId } = req.params;
+
+  try {
+    const [questions] = await pool.promise().query(
+      `
+      SELECT q.questionId, q.title, q.body, q.createdAt, u.username, q.courseId
+      FROM questions q
+      JOIN users u ON q.userId = u.userId
+      WHERE q.questionId = ?
+    `,
+      [questionId]
+    );
+
+    if (questions.length === 0) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    res.json(questions[0]);
+  } catch (error) {
+    console.error("Failed to fetch question:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+});
+
+app.post("/answers", async (req, res) => {
+  const { questionId, userId, title, body } = req.body;
+
+  // Ensure all required fields are provided
+  if (!questionId || !userId || !title || !body) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    // Insert the new answer into the database
+    await pool
+      .promise()
+      .query(
+        "INSERT INTO answers (questionId, userId, title, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())",
+        [questionId, userId, title, body]
+      );
+
+    // Respond with a success message
+    res.json({ message: "Answer submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting answer:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Backend server is running...");
 });
