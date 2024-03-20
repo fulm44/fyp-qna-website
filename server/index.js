@@ -215,6 +215,27 @@ app.post("/answers", async (req, res) => {
   }
 });
 
+app.get("/questions/:questionId/answers", async (req, res) => {
+  const { questionId } = req.params;
+
+  try {
+    // Query to select answers for a specific question
+    const [answers] = await pool
+      .promise()
+      .query(
+        "SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername FROM answers a JOIN users u ON a.userId = u.userId WHERE a.questionId = ? ORDER BY a.createdAt DESC",
+        [questionId]
+      );
+
+    res.json(answers);
+  } catch (error) {
+    console.error("Failed to fetch answers:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Backend server is running...");
 });

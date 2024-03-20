@@ -30,6 +30,25 @@ const QuestionDetailPage = () => {
     fetchQuestionDetails();
   }, [questionId]);
 
+  useEffect(() => {
+    const fetchQuestionDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3006/questions/${questionId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch question details");
+        const questionData = await response.json();
+        setQuestion(questionData);
+        // Assuming you'll later modify your endpoint to also fetch answers:
+        // setAnswers(questionData.answers || []);
+      } catch (error) {
+        console.error("Failed to fetch question details:", error.message);
+      }
+    };
+
+    fetchQuestionDetails();
+  }, [questionId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newAnswer.trim()) return;
@@ -39,22 +58,27 @@ const QuestionDetailPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // Include authentication token if needed
         },
         body: JSON.stringify({
-          questionId,
-          userId: user.userId,
-          title: "Answer title", // Adjust as necessary
+          questionId: questionId,
+          userId: user.userId, // Ensure you have user ID available in your user context
+          title: "Answer title", // Modify as needed. If your answers don't have titles, adjust accordingly.
           body: newAnswer,
         }),
       });
 
       if (!response.ok) {
+        // You can get more details from the response body if needed
         const resBody = await response.json();
         throw new Error(resBody.message || "Failed to submit answer");
       }
 
+      // Optionally, you can clear the form fields here if you want
       setNewAnswer("");
-      fetchQuestionDetails(); // Call it again to update answers
+
+      // Fetch question details again to update answers. You might need to adjust this if your API doesn't return updated answers immediately.
+      fetchQuestionDetails();
     } catch (error) {
       console.error("Error submitting answer:", error.message);
     }
