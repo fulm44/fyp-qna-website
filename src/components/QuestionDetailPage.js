@@ -11,42 +11,29 @@ const QuestionDetailPage = () => {
   const { questionId } = useParams();
   const { user } = useContext(UserContext);
 
-  // Define fetchQuestionDetails as a standalone function
-  const fetchQuestionDetails = async () => {
+  const fetchQuestionAndAnswers = async () => {
     try {
-      const response = await fetch(
+      const questionResponse = await fetch(
         `http://localhost:3006/questions/${questionId}`
       );
-      if (!response.ok) throw new Error("Failed to fetch question details");
-      const questionData = await response.json();
+      if (!questionResponse.ok)
+        throw new Error("Failed to fetch question details");
+      const questionData = await questionResponse.json();
       setQuestion(questionData);
-      // setAnswers(questionData.answers || []); // Uncomment when ready to use
+
+      const answersResponse = await fetch(
+        `http://localhost:3006/questions/${questionId}/answers`
+      );
+      if (!answersResponse.ok) throw new Error("Failed to fetch answers");
+      const answersData = await answersResponse.json();
+      setAnswers(answersData);
     } catch (error) {
-      console.error("Failed to fetch question details:", error.message);
+      console.error("Failed to fetch question and answers:", error.message);
     }
   };
 
   useEffect(() => {
-    fetchQuestionDetails();
-  }, [questionId]);
-
-  useEffect(() => {
-    const fetchQuestionDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3006/questions/${questionId}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch question details");
-        const questionData = await response.json();
-        setQuestion(questionData);
-        // Assuming you'll later modify your endpoint to also fetch answers:
-        // setAnswers(questionData.answers || []);
-      } catch (error) {
-        console.error("Failed to fetch question details:", error.message);
-      }
-    };
-
-    fetchQuestionDetails();
+    fetchQuestionAndAnswers();
   }, [questionId]);
 
   const handleSubmit = async (e) => {
@@ -62,23 +49,20 @@ const QuestionDetailPage = () => {
         },
         body: JSON.stringify({
           questionId: questionId,
-          userId: user.userId, // Ensure you have user ID available in your user context
-          title: "Answer title", // Modify as needed. If your answers don't have titles, adjust accordingly.
+          userId: user.userId,
           body: newAnswer,
         }),
       });
 
       if (!response.ok) {
-        // You can get more details from the response body if needed
         const resBody = await response.json();
         throw new Error(resBody.message || "Failed to submit answer");
       }
 
-      // Optionally, you can clear the form fields here if you want
       setNewAnswer("");
 
-      // Fetch question details again to update answers. You might need to adjust this if your API doesn't return updated answers immediately.
-      fetchQuestionDetails();
+      // Refetch question and answers to update the UI
+      fetchQuestionAndAnswers();
     } catch (error) {
       console.error("Error submitting answer:", error.message);
     }
@@ -108,8 +92,9 @@ const QuestionDetailPage = () => {
               {answers.length > 0 ? (
                 answers.map((answer, index) => (
                   <div key={index} className="answer">
-                    <p>{answer.text}</p>
-                    {/* Display additional answer details here */}
+                    <p>User: {answer.answererUsername}</p>
+                    <p>{answer.body}</p>
+                    <p>Time posted: {answer.createdAt}</p>
                   </div>
                 ))
               ) : (

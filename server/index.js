@@ -225,8 +225,8 @@ app.get("/questions/:questionId/answers", async (req, res) => {
       .query(
         "SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername FROM answers a JOIN users u ON a.userId = u.userId WHERE a.questionId = ? ORDER BY a.createdAt DESC",
         [questionId]
-      );
-
+    );
+    console.log("answers", answers);
     res.json(answers);
   } catch (error) {
     console.error("Failed to fetch answers:", error);
