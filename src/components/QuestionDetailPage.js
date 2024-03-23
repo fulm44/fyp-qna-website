@@ -76,7 +76,9 @@ const QuestionDetailPage = () => {
           <>
             <div className="question-section">
               <h2>{question.title}</h2>
+              <p>Question asked by: {question.username}</p>
               <p>{question.body}</p>
+              {/* Display additional question details here */}
             </div>
             <form onSubmit={handleSubmit} className="answer-form">
               <textarea
@@ -92,9 +94,10 @@ const QuestionDetailPage = () => {
               {answers.length > 0 ? (
                 answers.map((answer, index) => (
                   <div key={index} className="answer">
-                    <p>User: {answer.answererUsername}</p>
                     <p>{answer.body}</p>
+                    <p>Answered by: {answer.answererUsername}</p>
                     <p>Time posted: {answer.createdAt}</p>
+                    {/* Display additional answer details here */}
                   </div>
                 ))
               ) : (
@@ -109,5 +112,4 @@ const QuestionDetailPage = () => {
     </>
   );
 };
-
 export default QuestionDetailPage;
