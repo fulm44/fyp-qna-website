@@ -12,11 +12,15 @@ function QnAPage() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("http://localhost:3006/questions", {
-          headers: {
-            // If you have authentication, pass your token in headers
-          },
-        });
+        // Pass the user's course ID to fetch questions related to their course
+        const response = await fetch(
+          `http://localhost:3006/questions?courseId=${user.courseId}`,
+          {
+            headers: {
+              // If you have authentication, pass your token in headers
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -27,8 +31,11 @@ function QnAPage() {
       }
     };
 
-    fetchQuestions();
-  }, []);
+    // Fetch questions only if the user is logged in
+    if (user) {
+      fetchQuestions();
+    }
+  }, [user]);
 
   const handleAskQuestion = () => {
     console.log("Ask question clicked");

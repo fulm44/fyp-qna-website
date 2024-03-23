@@ -117,13 +117,21 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/questions", async (req, res) => {
+  const { courseId } = req.query; // Fetch courseId from query params
+
   try {
-    const [questions] = await pool.promise().query(`
+    // Fetch questions based on the user's course ID
+    const [questions] = await pool.promise().query(
+      `
       SELECT q.questionId, q.title, q.body, q.createdAt, u.username 
       FROM questions q
       JOIN users u ON q.userId = u.userId
+      WHERE q.courseId = ?
       ORDER BY q.createdAt DESC
-    `);
+    `,
+      [courseId]
+    );
+
     res.json(questions);
   } catch (error) {
     console.error("Failed to fetch questions:", error);
@@ -225,7 +233,7 @@ app.get("/questions/:questionId/answers", async (req, res) => {
       .query(
         "SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername FROM answers a JOIN users u ON a.userId = u.userId WHERE a.questionId = ? ORDER BY a.createdAt DESC",
         [questionId]
-    );
+      );
     console.log("answers", answers);
     res.json(answers);
   } catch (error) {
