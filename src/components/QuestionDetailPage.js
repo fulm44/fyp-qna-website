@@ -92,12 +92,21 @@ const QuestionDetailPage = () => {
             <div className="answers-section">
               <h3>Answers:</h3>
               {answers.length > 0 ? (
-                answers.map((answer, index) => (
-                  <div key={index} className="answer">
+                answers.map((answer) => (
+                  <div key={answer.answerId} className="answer">
+                    <p>
+                      <strong>{answer.answererUsername}</strong>
+                    </p>
                     <p>{answer.body}</p>
-                    <p>Answered by: {answer.answererUsername}</p>
-                    <p>Time posted: {answer.createdAt}</p>
-                    {/* Display additional answer details here */}
+                    <p>
+                      {new Date(answer.createdAt).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
                   </div>
                 ))
               ) : (
