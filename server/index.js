@@ -237,19 +237,19 @@ app.get("/questions/:questionId/answers", async (req, res) => {
   const { questionId } = req.params;
 
   try {
+    // Query to select answers for a specific question and calculate scores
     const [answers] = await pool.promise().query(
-      `
-      SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername,
-      (SELECT COUNT(*) FROM votes WHERE votes.answerId = a.answerId AND voteType = 'upvote') -
-      (SELECT COUNT(*) FROM votes WHERE votes.answerId = a.answerId AND voteType = 'downvote') AS score
+      `SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername,
+      COALESCE(SUM(v.voteType), 0) AS score
       FROM answers a
-      JOIN users u ON a.userId = u.userId
+      LEFT JOIN users u ON a.userId = u.userId
+      LEFT JOIN votes v ON a.answerId = v.answerId
       WHERE a.questionId = ?
-      ORDER BY a.createdAt DESC
-    `,
+      GROUP BY a.answerId
+      ORDER BY a.createdAt DESC`,
       [questionId]
     );
-
+    console.log("answers", answers);
     res.json(answers);
   } catch (error) {
     console.error("Failed to fetch answers:", error);
