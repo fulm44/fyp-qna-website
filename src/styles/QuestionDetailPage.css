@@ -37,3 +37,43 @@
   flex-direction: column;
   align-items: center; /* This will center the items horizontally */
 }
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.answer > p {
+  margin: 4px 0;
+}
+
+.vote-buttons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.vote-button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Add this to your QuestionDetailPage.css */
+.vote-button {
+  background-color: #f0f0f0; /* Light grey background */
+  border: 1px solid #ccc; /* Grey border */
+  padding: 5px 10px; /* Padding around the text */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor changes to pointer to indicate it's clickable */
+  margin-left: 5px; /* Space between the date and the first button */
+}
+
+.vote-button:hover {
+  background-color: #e0e0e0; /* Slightly darker grey on hover */
+}

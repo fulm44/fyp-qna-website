@@ -280,6 +280,44 @@ app.get("/search", async (req, res) => {
   }
 });
 
+app.post("/vote", async (req, res) => {
+  const { userId, answerId, voteType } = req.body;
+  try {
+    // Attempt to find an existing vote
+    const [existingVote] = await pool
+      .promise()
+      .query("SELECT voteId FROM votes WHERE userId = ? AND answerId = ?", [
+        userId,
+        answerId,
+      ]);
+    if (existingVote.length > 0) {
+      // Update the existing vote
+      await pool
+        .promise()
+        .query(
+          "UPDATE votes SET voteType = ? WHERE userId = ? AND answerId = ?",
+          [voteType, userId, answerId]
+        );
+    } else {
+      // Insert a new vote
+      await pool
+        .promise()
+        .query(
+          "INSERT INTO votes (userId, answerId, voteType) VALUES (?, ?, ?)",
+          [userId, answerId, voteType]
+        );
+    }
+    res.json({ success: true, message: "Vote recorded" });
+  } catch (error) {
+    console.error("SQL Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error recording vote",
+      error: error.message,
+    });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Backend server is running...");
 });

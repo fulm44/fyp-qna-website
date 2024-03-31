@@ -45,7 +45,6 @@ const QuestionDetailPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include authentication token if needed
         },
         body: JSON.stringify({
           questionId: questionId,
@@ -60,11 +59,33 @@ const QuestionDetailPage = () => {
       }
 
       setNewAnswer("");
-
-      // Refetch question and answers to update the UI
       fetchQuestionAndAnswers();
     } catch (error) {
       console.error("Error submitting answer:", error.message);
+    }
+  };
+
+  const handleVote = async (answerId, voteType) => {
+    try {
+      const response = await fetch(`http://localhost:3006/vote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          answerId,
+          userId: user.userId,
+          voteType, // "upvote" or "downvote"
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit vote");
+      }
+
+      fetchQuestionAndAnswers(); // Refresh answers to reflect the new vote count
+    } catch (error) {
+      console.error("Error submitting vote:", error.message);
     }
   };
 
@@ -76,9 +97,8 @@ const QuestionDetailPage = () => {
           <>
             <div className="question-section">
               <h2>{question.title}</h2>
-              <p>Question asked by: {question.username}</p>
+              <p>{question.username}</p>
               <p>{question.body}</p>
-              {/* Display additional question details here */}
             </div>
             <form onSubmit={handleSubmit} className="answer-form">
               <textarea
@@ -98,15 +118,36 @@ const QuestionDetailPage = () => {
                       <strong>{answer.answererUsername}</strong>
                     </p>
                     <p>{answer.body}</p>
-                    <p>
-                      {new Date(answer.createdAt).toLocaleDateString("en-GB", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <p className="answer-date">
+                        {new Date(answer.createdAt).toLocaleDateString(
+                          "en-GB",
+                          {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </p>
+                      <div className="vote-buttons">
+                        <button
+                          onClick={() => handleVote(answer.answerId, "upvote")}
+                          className="vote-button"
+                        >
+                          👍
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleVote(answer.answerId, "downvote")
+                          }
+                          className="vote-button"
+                        >
+                          👎
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -121,4 +162,5 @@ const QuestionDetailPage = () => {
     </>
   );
 };
+
 export default QuestionDetailPage;
