@@ -68,6 +68,7 @@ const QuestionDetailPage = () => {
   const handleVote = async (answerId, voteType) => {
     try {
       const response = await fetch(`http://localhost:3006/vote`, {
+        // Ensure correct endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +76,7 @@ const QuestionDetailPage = () => {
         body: JSON.stringify({
           answerId,
           userId: user.userId,
-          voteType, // "upvote" or "downvote"
+          voteType, // Directly passing voteType (1 or -1) from button click
         }),
       });
 
@@ -83,7 +84,7 @@ const QuestionDetailPage = () => {
         throw new Error("Failed to submit vote");
       }
 
-      fetchQuestionAndAnswers(); // Refresh answers to reflect the new vote count
+      fetchQuestionAndAnswers(); // Refresh to show updated vote counts
     } catch (error) {
       console.error("Error submitting vote:", error.message);
     }
@@ -118,7 +119,13 @@ const QuestionDetailPage = () => {
                       <strong>{answer.answererUsername}</strong>
                     </p>
                     <p>{answer.body}</p>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <p className="answer-date">
                         {new Date(answer.createdAt).toLocaleDateString(
                           "en-GB",
@@ -133,15 +140,14 @@ const QuestionDetailPage = () => {
                       </p>
                       <div className="vote-buttons">
                         <button
-                          onClick={() => handleVote(answer.answerId, "upvote")}
+                          onClick={() => handleVote(answer.answerId, 1)} // Pass 1 for upvote
                           className="vote-button"
                         >
                           👍
                         </button>
+                        <span className="vote-score">{answer.score}</span>
                         <button
-                          onClick={() =>
-                            handleVote(answer.answerId, "downvote")
-                          }
+                          onClick={() => handleVote(answer.answerId, -1)} // Pass -1 for downvote
                           className="vote-button"
                         >
                           👎

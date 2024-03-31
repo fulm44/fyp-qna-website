@@ -237,14 +237,19 @@ app.get("/questions/:questionId/answers", async (req, res) => {
   const { questionId } = req.params;
 
   try {
-    // Query to select answers for a specific question
-    const [answers] = await pool
-      .promise()
-      .query(
-        "SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername FROM answers a JOIN users u ON a.userId = u.userId WHERE a.questionId = ? ORDER BY a.createdAt DESC",
-        [questionId]
-      );
-    console.log("answers", answers);
+    const [answers] = await pool.promise().query(
+      `
+      SELECT a.answerId, a.body, a.createdAt, u.username AS answererUsername,
+      (SELECT COUNT(*) FROM votes WHERE votes.answerId = a.answerId AND voteType = 'upvote') -
+      (SELECT COUNT(*) FROM votes WHERE votes.answerId = a.answerId AND voteType = 'downvote') AS score
+      FROM answers a
+      JOIN users u ON a.userId = u.userId
+      WHERE a.questionId = ?
+      ORDER BY a.createdAt DESC
+    `,
+      [questionId]
+    );
+
     res.json(answers);
   } catch (error) {
     console.error("Failed to fetch answers:", error);
@@ -282,34 +287,36 @@ app.get("/search", async (req, res) => {
 
 app.post("/vote", async (req, res) => {
   const { userId, answerId, voteType } = req.body;
+
+  console.log(`Received vote:`, req.body); // Debug: Confirm received data
+
   try {
-    // Attempt to find an existing vote
+    const existingVoteQuery =
+      "SELECT voteId FROM votes WHERE userId = ? AND answerId = ?";
     const [existingVote] = await pool
       .promise()
-      .query("SELECT voteId FROM votes WHERE userId = ? AND answerId = ?", [
-        userId,
-        answerId,
-      ]);
+      .query(existingVoteQuery, [userId, answerId]);
+
+    let sql, values;
+
     if (existingVote.length > 0) {
-      // Update the existing vote
-      await pool
-        .promise()
-        .query(
-          "UPDATE votes SET voteType = ? WHERE userId = ? AND answerId = ?",
-          [voteType, userId, answerId]
-        );
+      console.log(
+        `Updating existing vote: AnswerID: ${answerId}, UserID: ${userId}, VoteType: ${voteType}`
+      );
+      sql = "UPDATE votes SET voteType = ? WHERE userId = ? AND answerId = ?";
+      values = [voteType, userId, answerId];
     } else {
-      // Insert a new vote
-      await pool
-        .promise()
-        .query(
-          "INSERT INTO votes (userId, answerId, voteType) VALUES (?, ?, ?)",
-          [userId, answerId, voteType]
-        );
+      console.log(
+        `Inserting new vote: AnswerID: ${answerId}, UserID: ${userId}, VoteType: ${voteType}`
+      );
+      sql = "INSERT INTO votes (userId, answerId, voteType) VALUES (?, ?, ?)";
+      values = [userId, answerId, voteType];
     }
+
+    await pool.promise().query(sql, values);
     res.json({ success: true, message: "Vote recorded" });
   } catch (error) {
-    console.error("SQL Error:", error);
+    console.error("SQL Error:", error); // Debug: Log SQL errors
     res.status(500).json({
       success: false,
       message: "Error recording vote",
