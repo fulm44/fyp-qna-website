@@ -244,6 +244,32 @@ app.get("/questions/:questionId/answers", async (req, res) => {
   }
 });
 
+app.get("/search", async (req, res) => {
+  const { query, courseId } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ message: "Query is required" });
+  }
+
+  try {
+    const [results] = await pool.promise().query(
+      `SELECT questionId, title, questions.body, questions.createdAt, users.username 
+        FROM questions JOIN users ON questions.userId = users.userId 
+        WHERE title LIKE ? AND questions.courseId = ? 
+        ORDER BY questions.createdAt DESC
+`,
+      [`%${query}%`, courseId]
+    );
+
+    res.json(results);
+  } catch (error) {
+    console.error("Search error:", error);
+    res
+      .status(500)
+      .json({ message: "Error performing search", error: error.message });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Backend server is running...");
 });
