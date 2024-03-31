@@ -39,7 +39,7 @@ app.post("/register", async (req, res) => {
         .status(404)
         .json({ success: false, message: "Course not found." });
     }
-    const courseId = courseResult[0].course_id;
+    const courseId = courseResult[0].courseId; // Corrected to match the actual property name
 
     const [userExists] = await pool
       .promise()
@@ -70,6 +70,11 @@ app.post("/register", async (req, res) => {
       error: error.message,
     });
   }
+
+  const [courseResult] = await pool
+    .promise()
+    .query("SELECT courseId FROM courses WHERE courseName = ?", [courseName]);
+  console.log(courseResult); // Add this line to log the result
 });
 
 app.post("/login", async (req, res) => {
@@ -197,20 +202,25 @@ app.get("/questions/:questionId", async (req, res) => {
 });
 
 app.post("/answers", async (req, res) => {
-  const { questionId, userId, title, body } = req.body;
+  const { questionId, userId, body } = req.body;
+
+  // Log received fields for debugging
+  console.log("Received fields:", { questionId, userId, body });
 
   // Ensure all required fields are provided
-  if (!questionId || !userId || !title || !body) {
-    return res.status(400).json({ message: "All fields are required" });
+  if (!questionId || !userId || !body) {
+    return res
+      .status(400)
+      .json({ message: "Question ID, User ID, and Body are required." });
   }
 
   try {
-    // Insert the new answer into the database
+    // Insert the new answer into the database without the title field
     await pool
       .promise()
       .query(
-        "INSERT INTO answers (questionId, userId, title, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())",
-        [questionId, userId, title, body]
+        "INSERT INTO answers (questionId, userId, body, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        [questionId, userId, body]
       );
 
     // Respond with a success message
