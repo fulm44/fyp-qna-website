@@ -10,6 +10,7 @@ function QnAPage() {
   const { user } = useUser();
   const navigate = useNavigate();
 
+  // Fetch questions from the API
   const fetchQuestions = async () => {
     if (user?.courseId) {
       try {
@@ -29,18 +30,18 @@ function QnAPage() {
 
   const handleSearch = async (query) => {
     if (query.length === 0) {
-      fetchQuestions();
+      fetchQuestions(); // fetch all questions if search query is empty
     } else {
       try {
         const searchUrl = `http://localhost:3006/search?query=${encodeURIComponent(
           query
         )}&courseId=${user.courseId}`;
-        const response = await fetch(searchUrl);
+        const response = await fetch(searchUrl); 
         if (!response.ok) {
           throw new Error("Search failed");
         }
         const results = await response.json();
-        setQuestionsList(results);
+        setQuestionsList(results); // update the questions list with search results
       } catch (error) {
         console.error("Error performing search:", error);
       }
@@ -49,7 +50,7 @@ function QnAPage() {
 
   useEffect(() => {
     fetchQuestions();
-  }, [user?.courseId]);
+  }, [user?.courseId]); // Fetch questions when the course ID changes
 
   return (
     <div className="qna-page">

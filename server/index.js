@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql2");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt"); // encrypts password babyyyy
 const cors = require("cors");
 
 const app = express();
@@ -10,6 +10,7 @@ const port = process.env.PORT || 3006;
 app.use(cors());
 app.use(express.json());
 
+// pool to handle database connections
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -20,6 +21,7 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+// register endpoint
 app.post("/register", async (req, res) => {
   const { username, password, email, courseName } = req.body;
   console.log("Received registration request with:", req.body);
@@ -77,6 +79,7 @@ app.post("/register", async (req, res) => {
   console.log(courseResult); // Add this line to log the result
 });
 
+//login endpoint
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -121,6 +124,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Fetch quesitons endpoint
 app.get("/questions", async (req, res) => {
   const { courseId } = req.query; // Fetch courseId from query params
 
@@ -144,6 +148,7 @@ app.get("/questions", async (req, res) => {
   }
 });
 
+// Submit question endpoint
 app.post("/submit-question", async (req, res) => {
   const { userId, title, body, courseId } = req.body;
 
@@ -174,6 +179,7 @@ app.post("/submit-question", async (req, res) => {
   }
 });
 
+// Fetch question by ID endpoint
 app.get("/questions/:questionId", async (req, res) => {
   const { questionId } = req.params;
 
@@ -201,6 +207,7 @@ app.get("/questions/:questionId", async (req, res) => {
   }
 });
 
+// Submit answer endpoint
 app.post("/answers", async (req, res) => {
   const { questionId, userId, body } = req.body;
 
@@ -233,6 +240,7 @@ app.post("/answers", async (req, res) => {
   }
 });
 
+// Fetch answers for a specific question
 app.get("/questions/:questionId/answers", async (req, res) => {
   const { questionId } = req.params;
 
@@ -259,6 +267,7 @@ app.get("/questions/:questionId/answers", async (req, res) => {
   }
 });
 
+// Search endpoint
 app.get("/search", async (req, res) => {
   const { query, courseId } = req.query;
 
@@ -284,7 +293,8 @@ app.get("/search", async (req, res) => {
       .json({ message: "Error performing search", error: error.message });
   }
 });
-
+ 
+// Vote endpoint
 app.post("/vote", async (req, res) => {
   const { userId, answerId, voteType } = req.body;
 
@@ -325,6 +335,8 @@ app.post("/vote", async (req, res) => {
   }
 });
 
+
+//checking server is running
 app.get("/", (req, res) => {
   res.send("Backend server is running...");
 });

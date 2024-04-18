@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate();
 
   // Use UserContext to set user data
-  const { setUser } = useContext(UserContext); // Assuming your context provides a setUser function
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +37,8 @@ function Login() {
       const data = await response.json();
       console.log("Login response:", data);
       if (response.ok) {
-        console.log("Login success:", data);
-        setUser(data.user); // This assumes `data.user` contains { username, userId }
+        console.log("Login success:", data); //debuggggg
+        setUser(data.user);
         navigate("/qna");
       } else {
         throw new Error(data.message || "An error occurred during login.");

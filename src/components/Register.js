@@ -48,17 +48,16 @@ function Register() {
     setSuccessMessage(""); // Reset success message
     if (validateForm()) {
       try {
-        // Assuming you have a function to make POST requests to your backend
-        const response = await fetch("http://localhost:3006/register", {
+        const response = await fetch("http://localhost:3006/register", { // calls API
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             username,
-            password, // Ensure your backend handles password encryption
+            password,
             email,
-            courseName, // Change from course to courseName
+            courseName,
           }),
         });
 
@@ -67,7 +66,6 @@ function Register() {
         if (data.success) {
           // Display success message
           setSuccessMessage("Account registered successfully.");
-          // Optionally, clear the form or redirect the user
         } else {
           // Handle errors from the server
           setErrorMessage(

@@ -11,22 +11,22 @@ const QuestionDetailPage = () => {
   const { questionId } = useParams();
   const { user } = useContext(UserContext);
 
-  const fetchQuestionAndAnswers = async () => {
+  const fetchQuestionAndAnswers = async () => { // Fetch question and answers from the API
     try {
       const questionResponse = await fetch(
         `http://localhost:3006/questions/${questionId}`
-      );
+      ); // Fetch the question details
       if (!questionResponse.ok)
         throw new Error("Failed to fetch question details");
-      const questionData = await questionResponse.json();
-      setQuestion(questionData);
+      const questionData = await questionResponse.json(); 
+      setQuestion(questionData); 
 
       const answersResponse = await fetch(
         `http://localhost:3006/questions/${questionId}/answers`
       );
       if (!answersResponse.ok) throw new Error("Failed to fetch answers");
       const answersData = await answersResponse.json();
-      setAnswers(answersData);
+      setAnswers(answersData); // Set the answers state
     } catch (error) {
       console.error("Failed to fetch question and answers:", error.message);
     }
@@ -38,7 +38,7 @@ const QuestionDetailPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newAnswer.trim()) return;
+    if (!newAnswer.trim()) return; // prevent submissions of empty answers
 
     try {
       const response = await fetch("http://localhost:3006/answers", {

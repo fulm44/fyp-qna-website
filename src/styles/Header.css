@@ -1,15 +1,13 @@
-/* Assuming you have a CSS file (e.g., Header.css) */
 .header {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center horizontally */
+  justify-content: center;
   padding: 1rem;
   background-color: #f8f8f8;
-  /* Add any other styling you need for the header */
 }
 
 .logo {
-  width: 50px; /* Adjust the logo size as needed */
+  width: 50px; 
   height: auto;
 }
 
@@ -17,7 +15,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 1rem;
-  margin-right: 1rem; /* Add spacing between title and buttons */
+  margin-right: 1rem;
 }
 
 .buttons {
@@ -37,9 +35,9 @@
 }
 
 .register-button {
-  background-color: #007bff; /* Blue color for register button */
+  background-color: #007bff;
 }
 
 .login-button {
-  background-color: #28a745; /* Green color for login button */
+  background-color: #28a745; 
 }

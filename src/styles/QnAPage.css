@@ -8,19 +8,19 @@
 }
 
 .ask-button {
-  margin: 20px auto; /* Updated */
+  margin: 20px auto; 
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  display: inline-block; /* Added */
-  max-width: 200px; /* Adjust as needed */
+  display: inline-block; 
+  max-width: 200px;
 }
 
 .questions-table {
   margin-top: 20px;
-  width: 80%; /* Adjust the width as needed */
-  margin-left: auto; /* Center the table */
-  margin-right: auto; /* Center the table */
+  width: 80%; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .questions-table table {

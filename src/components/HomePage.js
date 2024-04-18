@@ -1,8 +1,6 @@
 // src/components/HomePage.js
 import React from "react";
 import "../styles/HomePage.css";
-import logo from "../images/Lecture Loop logo - transparent.png";
-import { Link } from "react-router-dom";
 import Header from "./Header";
 
 const HomePage = () => {

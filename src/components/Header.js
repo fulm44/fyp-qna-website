@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/Lecture Loop logo - transparent.png";
-import UserContext from "../context/UserContext"; // Adjust the import path as necessary
+import UserContext from "../context/UserContext";
 
 const Header = () => {
   const { user, logout } = useContext(UserContext); // Destructure logout if provided by your context

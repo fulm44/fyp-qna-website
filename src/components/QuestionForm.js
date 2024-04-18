@@ -11,7 +11,7 @@ const QuestionForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission
     if (!title || !body) {
       setError("Both title and body are required");
       return;
@@ -21,16 +21,14 @@ const QuestionForm = () => {
       return;
     }
 
-    // Adjust the URL to your endpoint for submitting questions
     try {
-      const response = await fetch("http://localhost:3006/submit-question", {
+      const response = await fetch("http://localhost:3006/submit-question", { // API call
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include authentication token if needed
         },
-        body: JSON.stringify({
-          userId: user.userId, // Make sure this matches how userId is stored
+        body: JSON.stringify({ 
+          userId: user.userId, 
           title,
           body,
           courseId: user.courseId,
@@ -38,16 +36,15 @@ const QuestionForm = () => {
       });
 
       if (!response.ok) {
-        // You can get more details from the response body if needed
         const resBody = await response.json();
         throw new Error(resBody.message || "Failed to post question");
       }
 
-      // Optionally, you can clear the form fields here if you want
+      // clear the form fields here if you want
       setTitle("");
       setBody("");
 
-      // Redirect to QnA page or show success message
+      // Redirect to QnA page
       navigate("/qna");
     } catch (error) {
       console.error("Error submitting question:", error);
